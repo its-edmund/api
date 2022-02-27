@@ -8,7 +8,7 @@ import bodyParser from "body-parser";
 
 import { defaultRouter } from "./routes";
 
-mongoose.connect("mongodb://localhost:27017/acmedb").catch(err => {
+mongoose.connect(process.env.MONGODB_URI as string).catch(err => {
   throw err;
 });
 
