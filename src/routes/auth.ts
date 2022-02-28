@@ -2,12 +2,12 @@ import express from "express";
 import bcrypt from "bcrypt";
 import jwt, { Secret } from "jsonwebtoken";
 
-import { asyncHandler, generateError } from "../utils/index";
+import { asyncHandler, generateError, verifyEmail } from "../utils/index";
 import { UserModel } from "../models/User";
 
 export const authRoutes = express.Router();
 
-authRoutes.route("/login").post(
+authRoutes.route("/auth/login").post(
   asyncHandler(async (req, res) => {
     try {
       const { username, password } = req.body;
@@ -35,13 +35,17 @@ authRoutes.route("/login").post(
   })
 );
 
-authRoutes.route("/register").post(
+authRoutes.route("/auth/register").post(
   asyncHandler(async (req, res) => {
     try {
       const { username, email, password } = req.body;
 
       if (!username || !email || !password) {
         throw new Error("All fields must be provided!");
+      }
+
+      if (!verifyEmail(email)) {
+        throw new Error("Email is not valid!");
       }
 
       const existingUser = await UserModel.findOne({ email });
