@@ -7,7 +7,7 @@ import { UserModel } from "../models/User";
 
 export const authRoutes = express.Router();
 
-authRoutes.route("/auth/login").post(
+authRoutes.route("/login").post(
   asyncHandler(async (req, res) => {
     try {
       const { username, password } = req.body;
@@ -35,7 +35,7 @@ authRoutes.route("/auth/login").post(
   })
 );
 
-authRoutes.route("/auth/register").post(
+authRoutes.route("/register").post(
   asyncHandler(async (req, res) => {
     try {
       const { username, email, password } = req.body;

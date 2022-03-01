@@ -14,17 +14,22 @@ export const generateError = (err: unknown): string => {
 
 export const verifyEmail = (email: any) => {
   const emailRegex =
-    /^[-!#$%&'*+/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
+    // eslint-disable-next-line no-useless-escape
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  console.log(email);
+  console.log(typeof email);
 
   if (!email) return false;
 
-  if (email !== "string") {
+  if (typeof email !== "string") {
     return false;
   }
 
   if (email.length > 254) return false;
 
   const valid = emailRegex.test(email);
+
   if (!valid) return false;
 
   // Further checking of some things regex can't handle
