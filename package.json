@@ -7,7 +7,8 @@
     "start": "nodemon src/app.ts",
     "prod": "ts-node src/app.ts",
     "build": "tsc",
-    "test": "mocha --require ts-node/register 'test/**/*.ts' --exit"
+    "test": "mocha --require ts-node/register 'test/**/*.ts' --exit",
+    "clean": "tsc --build --clean"
   },
   "devDependencies": {
     "@its-edmund/eslint-config": "^0.0.1",

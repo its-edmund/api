@@ -7,6 +7,12 @@ import { UserModel } from "../models/User";
 
 export const authRoutes = express.Router();
 
+authRoutes.route("/status").get(
+  asyncHandler(async (req, res) => {
+    res.status(201).end("Authentication service is running!");
+  })
+);
+
 authRoutes.route("/login").post(
   asyncHandler(async (req, res) => {
     try {
