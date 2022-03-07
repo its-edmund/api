@@ -1,4 +1,5 @@
 import express from "express";
+import mongoose from "mongoose";
 import { verifyToken } from "../middleware/auth";
 import { PostModel } from "../models/Post";
 import { asyncHandler } from "../utils";
@@ -11,8 +12,9 @@ postRoutes.route("/status").get(
   })
 );
 
+postRoutes.use(verifyToken);
+
 postRoutes.route("/add").post(
-  verifyToken,
   asyncHandler(async (req, res) => {
     const { body, title } = req.body;
 
@@ -25,8 +27,51 @@ postRoutes.route("/add").post(
   })
 );
 
+postRoutes.route("/:id").delete(
+  asyncHandler(async (req, res) => {
+    const id = req.params.id;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error("Invalid id provided!");
+    }
+
+    const post = await PostModel.findOneAndDelete({
+      _id: id,
+    });
+
+    res.status(200).send(`Post successfully deleted!`);
+  })
+);
+
+postRoutes.route("/:id").patch(
+  asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    const { title, body } = req.body;
+
+    if (!title || !body) {
+      throw new Error("Fields are missing to edit!");
+    }
+
+    const post = await PostModel.findOneAndUpdate(
+      { _id: id },
+      {
+        body,
+      }
+    );
+  })
+);
+
+postRoutes.route("/:id").get(
+  asyncHandler(async (req, res) => {
+    const id = req.params.id;
+
+    const post = await PostModel.findById(id);
+
+    res.status(200).json(post);
+  })
+);
+
 postRoutes.route("/").get(
-  verifyToken,
   asyncHandler(async (req, res) => {
     const posts = await PostModel.find();
 
