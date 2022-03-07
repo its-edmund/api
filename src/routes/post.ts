@@ -1,4 +1,5 @@
 import express from "express";
+import { verifyToken } from "../middleware/auth";
 import { PostModel } from "../models/Post";
 import { asyncHandler } from "../utils";
 
@@ -23,4 +24,11 @@ postRoutes.route("/add").post(
   })
 );
 
-postRoutes.route("/").get(asyncHandler((req, res) => {}));
+postRoutes.route("/").get(
+  verifyToken,
+  asyncHandler(async (req, res) => {
+    const posts = await PostModel.find();
+
+    res.status(200).json(posts);
+  })
+);

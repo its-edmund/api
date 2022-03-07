@@ -44,6 +44,7 @@ authRoutes.route("/login").post(
 authRoutes.route("/register").post(
   asyncHandler(async (req, res) => {
     try {
+      res.status(400).send("Nice try, we're not taking new members.");
       const { username, email, password } = req.body;
 
       if (!username || !email || !password) {
