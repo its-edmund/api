@@ -12,6 +12,7 @@ postRoutes.route("/status").get(
 );
 
 postRoutes.route("/add").post(
+  verifyToken,
   asyncHandler(async (req, res) => {
     const { body, title } = req.body;
 
