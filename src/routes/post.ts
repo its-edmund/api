@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import { verifyToken } from "../middleware/auth";
 import { PostModel } from "../models/Post";
+import { BackupPostModel } from "../models/BackupPost";
 import { asyncHandler } from "../utils";
 
 export const postRoutes = express.Router();
@@ -21,6 +22,13 @@ postRoutes.route("/add").post(
     const newPost = await PostModel.create({
       body,
       title,
+      timestamp: Date.now(),
+    });
+
+    const newBackupPost = await BackupPostModel.create({
+      body,
+      title,
+      timestamp: Date.now(),
     });
 
     res.status(200).send(`Post ${newPost.id} successfully posted!`);
