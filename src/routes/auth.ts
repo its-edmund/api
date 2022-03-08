@@ -90,7 +90,7 @@ authRoutes.route("/register").post(
 
 authRoutes.route("/otp").post(
   asyncHandler(async (req, res) => {
-    const { phoneNumber, username } = req.body;
+    const { username } = req.body;
 
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     const id = v4();
@@ -103,7 +103,7 @@ authRoutes.route("/otp").post(
 
     await OTPRequestModel.create({
       userId: user._id,
-      phoneNumber,
+      phoneNumber: user.phoneNumber,
       code,
       sessionId: id,
     });
@@ -116,7 +116,7 @@ authRoutes.route("/otp").post(
 
     await client.messages.create({
       from: twilioNumber,
-      to: phoneNumber,
+      to: user.phoneNumber,
       body: `${code} is your OTP code.`,
     });
 
