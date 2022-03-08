@@ -1,9 +1,12 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt, { Secret } from "jsonwebtoken";
+import { v4 } from "uuid";
+import { Twilio } from "twilio";
 
 import { asyncHandler, generateError, verifyEmail } from "../utils/index";
-import { UserModel } from "../models/User";
+import { UserModel, User } from "../models/User";
+import { OTPRequest, OTPRequestModel } from "../models/OTPRequest";
 
 export const authRoutes = express.Router();
 
@@ -73,7 +76,7 @@ authRoutes.route("/register").post(
 
       // Generate JWT token
       const token = jwt.sign({ _id: user._id }, process.env.TOKEN_KEY as Secret, {
-        expiresIn: "2h",
+        expiresIn: "7d",
       });
 
       user.token = token;
@@ -81,6 +84,66 @@ authRoutes.route("/register").post(
       res.status(201).json(user);
     } catch (err) {
       res.status(400).send(generateError(err));
+    }
+  })
+);
+
+authRoutes.route("/otp").post(
+  asyncHandler(async (req, res) => {
+    const { phoneNumber, username } = req.body;
+
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const id = v4();
+
+    const user = await UserModel.findOne({ username });
+
+    if (!user) {
+      throw new Error("User not found!");
+    }
+
+    await OTPRequestModel.create({
+      userId: user._id,
+      phoneNumber,
+      code,
+      sessionId: id,
+    });
+
+    const accountSid = process.env.TWILIO_ACCOUNT_SID!;
+    const authToken = process.env.TWILIO_AUTH_TOKEN!;
+    const twilioNumber = process.env.TWILIO_PHONE_NUMBER;
+
+    const client = new Twilio(accountSid, authToken);
+
+    await client.messages.create({
+      from: twilioNumber,
+      to: phoneNumber,
+      body: `${code} is your OTP code.`,
+    });
+
+    res.status(200).json({ sessionId: id });
+  })
+);
+
+authRoutes.route("/otp/verify").post(
+  asyncHandler(async (req, res) => {
+    const { sessionId, code } = req.body;
+
+    const request = await OTPRequestModel.findOne({ sessionId });
+
+    if (!request) {
+      throw new Error("Session not found!");
+    }
+
+    console.log(request.code);
+
+    if (request?.code !== code) {
+      res.status(401).send("OTP code is incorrect!");
+    } else {
+      // Generate JWT token
+      const token = jwt.sign({ _id: request.userId }, process.env.TOKEN_KEY as Secret, {
+        expiresIn: "7d",
+      });
+      res.status(200).send(token);
     }
   })
 );
