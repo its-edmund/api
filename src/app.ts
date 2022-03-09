@@ -16,7 +16,11 @@ mongoose.connect(process.env.MONGODB_URI as string).catch(err => {
 export const app = express();
 const PORT = process.env.PORT || 8000;
 
-app.use(cors());
+app.use(
+  cors({
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  })
+);
 app.use(express.json());
 app.use(morgan("dev"));
 

@@ -1,5 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
+
 import { verifyToken } from "../middleware/auth";
 import { PostModel } from "../models/Post";
 import { BackupPostModel } from "../models/BackupPost";
@@ -37,7 +38,7 @@ postRoutes.route("/add").post(
 
 postRoutes.route("/:id").delete(
   asyncHandler(async (req, res) => {
-    const id = req.params.id;
+    const { id } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       throw new Error("Invalid id provided!");
@@ -53,7 +54,7 @@ postRoutes.route("/:id").delete(
 
 postRoutes.route("/:id").patch(
   asyncHandler(async (req, res) => {
-    const id = req.params.id;
+    const { id } = req.params;
     const { title, body } = req.body;
 
     if (!title || !body) {
@@ -63,6 +64,7 @@ postRoutes.route("/:id").patch(
     const post = await PostModel.findOneAndUpdate(
       { _id: id },
       {
+        title,
         body,
       }
     );
@@ -71,7 +73,7 @@ postRoutes.route("/:id").patch(
 
 postRoutes.route("/:id").get(
   asyncHandler(async (req, res) => {
-    const id = req.params.id;
+    const { id } = req.params;
 
     const post = await PostModel.findById(id);
 
