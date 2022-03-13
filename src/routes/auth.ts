@@ -47,8 +47,8 @@ authRoutes.route("/login").post(
 authRoutes.route("/register").post(
   asyncHandler(async (req, res) => {
     try {
-      res.status(400).send("Nice try, we're not taking new members.");
-      const { username, email, password } = req.body;
+      // res.status(400).send("Nice try, we're not taking new members.");
+      const { username, email, password, phoneNumber } = req.body;
 
       if (!username || !email || !password) {
         throw new Error("All fields must be provided!");
@@ -71,11 +71,12 @@ authRoutes.route("/register").post(
       const user = await UserModel.create({
         username,
         email: email.toLowerCase(),
+        phoneNumber,
         password: hashedPassword,
       });
 
       // Generate JWT token
-      const token = jwt.sign({ _id: user._id }, process.env.TOKEN_KEY as Secret, {
+      const token = jwt.sign({ user_id: user._id, username }, process.env.TOKEN_KEY as Secret, {
         expiresIn: "7d",
       });
 

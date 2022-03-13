@@ -1,5 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
 
 import { verifyToken } from "../middleware/auth";
 import { PostModel } from "../models/Post";
@@ -18,18 +19,22 @@ postRoutes.use(verifyToken);
 
 postRoutes.route("/add").post(
   asyncHandler(async (req, res) => {
-    const { body, title } = req.body;
+    const { body, title, token } = req.body;
+
+    const decoded = jwt.decode(token, { complete: true }) as any;
 
     const newPost = await PostModel.create({
       body,
       title,
       timestamp: Date.now(),
+      userId: decoded.payload.user_id,
     });
 
     const newBackupPost = await BackupPostModel.create({
       body,
       title,
       timestamp: Date.now(),
+      userId: decoded.payload.user_id,
     });
 
     res.status(200).send(`Post ${newPost.id} successfully posted!`);
@@ -80,10 +85,23 @@ postRoutes.route("/:id").get(
     res.status(200).json(post);
   })
 );
+interface JwtPayload {
+  _id: string;
+}
 
-postRoutes.route("/").get(
+postRoutes.route("/").post(
   asyncHandler(async (req, res) => {
-    const posts = await PostModel.find();
+    const { token } = req.body;
+
+    if (!token) {
+      throw new Error("Missing user token!");
+    }
+
+    console.log(token);
+
+    const decoded = jwt.decode(token, { complete: true }) as any;
+
+    const posts = await PostModel.find({ userId: decoded.payload.user_id });
 
     res.status(200).json(posts);
   })
