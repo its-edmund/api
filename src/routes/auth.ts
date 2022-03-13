@@ -141,7 +141,7 @@ authRoutes.route("/otp/verify").post(
       res.status(401).send("OTP code is incorrect!");
     } else {
       // Generate JWT token
-      const token = jwt.sign({ _id: request.userId }, process.env.TOKEN_KEY as Secret, {
+      const token = jwt.sign({ user_id: request.userId }, process.env.TOKEN_KEY as Secret, {
         expiresIn: "7d",
       });
       res.status(200).send(token);
