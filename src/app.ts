@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import morgan from "morgan";
 import "dotenv/config";
+import Bottleneck from "bottleneck";
 
 // import bodyParser from "body-parser";
 
@@ -16,6 +17,11 @@ mongoose.connect(process.env.MONGODB_URI as string).catch(err => {
 export const app = express();
 const PORT = process.env.PORT || 8000;
 
+const limiter = new Bottleneck({
+  minTime: 10000,
+  maxConcurrent: 1,
+});
+
 app.use(
   cors({
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -26,6 +32,31 @@ app.use(morgan("dev"));
 
 app.get("/status", (req, res) => {
   res.send("works");
+});
+
+app.get("/", (req, res) => {
+  res.redirect("/zen");
+});
+
+app.get("/zen", (req, res) => {
+  const zen = [
+    "It's not fully shipped until it's fast.",
+    "Practicality beats purity.",
+    "Avoid administrative distraction.",
+    "Mind your words, they are important.",
+    "Non-blocking is better than blocking.",
+    "Design for failure.",
+    "Half measures are as bad as nothing at all.",
+    "Favor focus over features.",
+    "Approachable is better than simple.",
+    "Encourage flow.",
+    "Anything added dilutes everything else.",
+    "Speak like a human.",
+    "Responsive is better than fast.",
+    "Keep it logically awesome.",
+  ];
+
+  res.status(200).send(zen[Math.floor(Math.random() * zen.length)]);
 });
 
 app.use("/", defaultRouter);
