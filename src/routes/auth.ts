@@ -29,10 +29,12 @@ authRoutes.route("/login").post(
 
       if (user && (await bcrypt.compare(password, user.password))) {
         const token = jwt.sign({ user_id: user._id, username }, process.env.TOKEN_KEY as Secret, {
-          expiresIn: "2h",
+          expiresIn: "7d",
         });
 
         user.token = token;
+
+        res.cookie("token", token, { domain: ".edmundxin.me", secure: true });
 
         res.status(200).json(user);
       } else {
@@ -86,6 +88,22 @@ authRoutes.route("/register").post(
     } catch (err) {
       res.status(400).send(generateError(err));
     }
+  })
+);
+
+authRoutes.route("/delete").delete(
+  asyncHandler(async (req, res) => {
+    const { username } = req.body;
+
+    const user = await UserModel.findOne({ username });
+
+    if (!user) {
+      throw new Error("User not found!");
+    }
+
+    await user.delete();
+
+    res.status(204).send("User successfully deleted!");
   })
 );
 

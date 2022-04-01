@@ -1,3 +1,9 @@
 {
-  "extends": "@its-edmund/tsconfig"
+  "extends": "@its-edmund/tsconfig",
+  "compilerOptions": {
+    "typeRoots": ["./src/types"],
+    "paths": {
+      "@middlewares/*": ["./src/middlewares/*"]
+    }
+  }
 }

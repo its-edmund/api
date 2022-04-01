@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 
-import { verifyToken } from "../middleware/auth";
+import { verifyToken } from "../middlewares/auth";
 import { PostModel } from "../models/Post";
 import { BackupPostModel } from "../models/BackupPost";
 import { asyncHandler } from "../utils";

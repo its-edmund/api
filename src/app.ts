@@ -8,7 +8,9 @@ import Bottleneck from "bottleneck";
 // import bodyParser from "body-parser";
 
 import { defaultRouter } from "./routes";
-import { handleError } from "./middleware/handleErrors";
+import { handleError } from "./middlewares/handleErrors";
+import session from "express-session";
+import { isAuthenticated } from "./middlewares/auth";
 
 mongoose.connect(process.env.MONGODB_URI as string).catch(err => {
   throw err;
@@ -17,11 +19,21 @@ mongoose.connect(process.env.MONGODB_URI as string).catch(err => {
 export const app = express();
 const PORT = process.env.PORT || 8000;
 
+app.set("views", "./src/views");
+app.set("view engine", "ejs");
+
 const limiter = new Bottleneck({
   minTime: 10000,
   maxConcurrent: 1,
 });
 
+app.use(
+  session({
+    secret: "keyboard cat",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 app.use(
   cors({
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -57,6 +69,10 @@ app.get("/zen", (req, res) => {
   ];
 
   res.status(200).send(zen[Math.floor(Math.random() * zen.length)]);
+});
+
+app.use("/protectedroute", isAuthenticated, (req, res, next) => {
+  res.send("arrived");
 });
 
 app.use("/", defaultRouter);
