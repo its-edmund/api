@@ -1,3 +1,15 @@
 {
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@api/common": ["common"]
+    }
+  },
+  "references": [
+    {
+      "name": "@api/common",
+      "path": "common"
+    }
+  ],
   "extends": "@its-edmund/tsconfig"
 }
