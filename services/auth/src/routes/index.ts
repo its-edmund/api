@@ -1,6 +1,6 @@
 import express from "express";
+import { authRoutes } from "./auth";
 
-export defaultRouter = express.Router();
+export const defaultRouter = express.Router();
 
-defaultRouter.use("/auth", authRoutes)
-
+defaultRouter.use("/auth", authRoutes);
