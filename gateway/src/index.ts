@@ -17,6 +17,17 @@ app.use(
   })
 );
 
+app.use(
+  "/posts",
+  createProxyMiddleware({
+    target: "http://localhost:8002",
+    changeOrigin: true,
+    pathRewrite: {
+      [`^/posts`]: "",
+    },
+  })
+);
+
 app.listen(8000, () => {
   console.log(`GATEWAY started on port ${8000}`);
 });

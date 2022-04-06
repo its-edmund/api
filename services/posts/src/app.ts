@@ -31,6 +31,6 @@ app.get("/status", (req, res) => {
 
 app.use("/", defaultRouter);
 
-app.listen(PORT, () => {
-  console.log(`POSTS services started on port ${PORT}`);
+app.listen(8002, () => {
+  console.log(`POSTS services started on port ${8002}`);
 });

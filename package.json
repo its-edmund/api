@@ -7,7 +7,7 @@
   "scripts": {
     "start": "ts-node index.ts",
     "prod": "ts-node src/app.ts",
-    "build": "tsc --build --force",
+    "build": "tsc --build --force && tsc --build --force services/tasks && tsc --build --force services/posts",
     "test": "mocha --require ts-node/register 'test/**/*.ts' --exit",
     "clean": "tsc --build --clean"
   },

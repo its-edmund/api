@@ -31,6 +31,6 @@ app.get("/status", (req, res) => {
 
 app.use("/", defaultRouter);
 
-app.listen(PORT, () => {
-  console.log(`TASKS services started on port ${PORT}`);
+app.listen(8003, () => {
+  console.log(`TASKS services started on port ${8003}`);
 });

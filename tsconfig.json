@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
       "@api/common": ["common"]
     },
     "outDir": "dist"
   },
   "extends": "@its-edmund/tsconfig",
-  "include": ["services/**/*", "common/**/*", "gateway/**/*", "./index.ts"],
+  "include": [],
   "exclude": ["**/node_modules", "**/dist"]
 }
