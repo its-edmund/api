@@ -7,6 +7,6 @@
     "outDir": "dist"
   },
   "extends": "@its-edmund/tsconfig",
-  "include": [],
+  "include": ["common/**/*", "gateway/**/*", "services/**/*"],
   "exclude": ["**/node_modules", "**/dist"]
 }

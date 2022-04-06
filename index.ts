@@ -1,7 +1,7 @@
 import concurrently from "concurrently";
 
 concurrently([
-  { command: "cd gateway && yarn dev", name: "gateway" },
-  { command: "cd services/posts && yarn dev", name: "posts" },
-  { command: "cd services/tasks && yarn start", name: "tasks" },
+  { command: "cd gateway/src && node index.js", name: "gateway" },
+  { command: "cd services/posts/src && node app.js", name: "posts" },
+  { command: "cd services/tasks/src && node app.js", name: "tasks" },
 ]);
