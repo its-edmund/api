@@ -6,13 +6,7 @@
     },
     "outDir": "dist"
   },
-  // "references": [
-  //   {
-  //     "name": "@api/common",
-  //     "path": "common"
-  //   }
-  // ],
   "extends": "@its-edmund/tsconfig",
-  "include": ["services/**/*", "common/**/*", "gateway/**/*"],
+  "include": ["services/**/*", "common/**/*", "gateway/**/*", "./index.ts"],
   "exclude": ["**/node_modules", "**/dist"]
 }
