@@ -2,10 +2,10 @@ import express from "express";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 
-import { verifyToken } from "../middleware/auth";
+import { verifyToken } from "../../../../common/src/middleware/auth";
 import { PostModel } from "../models/Post";
 import { BackupPostModel } from "../models/BackupPost";
-import { asyncHandler } from "../utils";
+import { asyncHandler } from "../../../../common/src/utils";
 
 export const postRoutes = express.Router();
 

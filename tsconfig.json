@@ -3,13 +3,16 @@
     "baseUrl": "./",
     "paths": {
       "@api/common": ["common"]
-    }
+    },
+    "outDir": "dist"
   },
-  "references": [
-    {
-      "name": "@api/common",
-      "path": "common"
-    }
-  ],
-  "extends": "@its-edmund/tsconfig"
+  // "references": [
+  //   {
+  //     "name": "@api/common",
+  //     "path": "common"
+  //   }
+  // ],
+  "extends": "@its-edmund/tsconfig",
+  "include": ["services/**/*", "common/**/*", "gateway/**/*"],
+  "exclude": ["**/node_modules", "**/dist"]
 }

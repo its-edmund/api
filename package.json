@@ -10,6 +10,11 @@
     "test": "mocha --require ts-node/register 'test/**/*.ts' --exit",
     "clean": "tsc --build --clean"
   },
+  "workspaces": [
+    "services/**",
+    "gateway",
+    "common"
+  ],
   "devDependencies": {
     "@its-edmund/eslint-config": "^0.0.1",
     "@its-edmund/prettier-config": "^0.0.1",
@@ -54,5 +59,7 @@
   "eslintConfig": {
     "extends": "@its-edmund/eslint-config"
   },
-  "prettier": "@its-edmund/prettier-config"
+  "prettier": "@its-edmund/prettier-config",
+  "repository": "https://github.com/its-edmund/authenication-service.git",
+  "author": "mxinburritos <mxinburritos@gmail.com>"
 }
