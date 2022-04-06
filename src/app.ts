@@ -7,7 +7,7 @@ import Bottleneck from "bottleneck";
 
 // import bodyParser from "body-parser";
 
-import { defaultRouter } from "./routes";
+import { defaultRouter } from "./services";
 import { handleError } from "./middleware/handleErrors";
 
 mongoose.connect(process.env.MONGODB_URI as string).catch(err => {
@@ -64,5 +64,5 @@ app.use("/", defaultRouter);
 app.use(handleError);
 
 app.listen(PORT, () => {
-  console.log(`Authentication service started on port ${PORT}`);
+  console.log(`Service started on port ${PORT}`);
 });
