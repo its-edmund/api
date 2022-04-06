@@ -89,6 +89,18 @@ authRoutes.route("/register").post(
   })
 );
 
+authRoutes.route("/:id").delete(async (req, res) => {
+  const { id } = req.params;
+
+  if (!id) {
+    throw new Error("User id is required to delete user!");
+  }
+
+  const deleteUser = await UserModel.findByIdAndDelete(id);
+
+  res.status(204).send("User successfully deleted!");
+});
+
 authRoutes.route("/otp").post(
   asyncHandler(async (req, res) => {
     const { username } = req.body;

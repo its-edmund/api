@@ -4,6 +4,10 @@ import { TaskModel } from "../models/Task";
 
 export const taskRoutes = express.Router();
 
+taskRoutes.route("/status").get(async (req, res) => {
+  res.status(200).send("Task service is running!");
+});
+
 taskRoutes.route("/").post(async (req, res) => {
   const { name, date, completed } = req.body;
 

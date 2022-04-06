@@ -7,7 +7,7 @@
     "start": "nodemon src/app.ts",
     "prod": "ts-node src/app.ts",
     "build": "tsc",
-    "test": "mocha --require ts-node/register 'test/**/*.ts' --exit",
+    "test": "mocha --require ts-node/register 'test/**/*.ts' --exit --timeout 10000",
     "clean": "tsc --build --clean"
   },
   "devDependencies": {
