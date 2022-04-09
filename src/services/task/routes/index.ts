@@ -25,6 +25,7 @@ taskRoutes.route("/").post(async (req, res) => {
     name,
     date,
     completed,
+    userId: decoded.payload.user_id,
   });
 
   res.status(200).json(newTask);
