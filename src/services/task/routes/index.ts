@@ -1,5 +1,7 @@
 import express from "express";
+import jwt from "jsonwebtoken";
 
+import { verifyToken } from "../../../middleware/auth";
 import { TaskModel } from "../models/Task";
 
 export const taskRoutes = express.Router();
@@ -8,8 +10,12 @@ taskRoutes.route("/status").get(async (req, res) => {
   res.status(200).send("Task service is running!");
 });
 
+taskRoutes.use(verifyToken);
+
 taskRoutes.route("/").post(async (req, res) => {
-  const { name, date, completed } = req.body;
+  const { name, date, completed, token } = req.body;
+
+  const decoded = jwt.decode(token, { complete: true }) as any;
 
   if (!name) {
     throw new Error("Name is required!");

@@ -1,10 +1,17 @@
 import { Schema, model } from "mongoose";
 
+enum Priority {
+  HIGH = 1,
+  MEDIUM = 2,
+  LOW = 3,
+}
+
 export interface Post {
   title: string;
   body: string;
   timestamp: number;
   userId: string;
+  priority: Priority;
 }
 
 const postSchema = new Schema<Post>({
