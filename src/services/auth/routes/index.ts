@@ -29,7 +29,7 @@ authRoutes.route("/login").post(
 
       if (user && (await bcrypt.compare(password, user.password))) {
         const token = jwt.sign({ user_id: user._id, username }, process.env.TOKEN_KEY as Secret, {
-          expiresIn: "2h",
+          expiresIn: "7d",
         });
 
         user.token = token;
